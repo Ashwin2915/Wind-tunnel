@@ -1,0 +1,4 @@
+  Run_nr	    Time	   Alpha	    Beta	   P_bar	       T	      B1	      B2	      B3	      B4	      B5	      B6
+       /	   H:M:S	 degrees	 degrees	     hPa	 degr._C	   steps	   steps	   steps	   steps	   steps	   steps
+       0	 10:53:08	   7.996	  -4.000	 1017.50	   14.42	   -20.6	    -0.8	   -25.7	   -18.5	   132.2	    -2.5
+       0	 10:53:39	   4.004	   4.000	 1017.51	   14.43	   -20.9	    -6.1	    -6.8	    -1.5	    35.7	     6.2
