@@ -10,7 +10,8 @@ clc
 %% Inputs
 
 % define root path on disk where data is stored
-diskPath = 'C:\Group_16_Redo_BAL\BAL_redo';
+% diskPath = 'C:\Group_16_Redo_BAL\BAL_redo'; %Ashwin Save
+diskPath = 'D:\TUD\Courses\Experimental Simulation\sandbox\BAL_redo'; %Nakul Save
 
 % get indices balance and pressure data files
 [idxB] = SUP_getIdx;
