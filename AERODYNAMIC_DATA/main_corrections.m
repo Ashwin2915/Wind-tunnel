@@ -79,6 +79,8 @@ Ksb.rudder_p10_block1   = 0.90;
 Ksb.rudder_p10_block5   = 0.90;
 
 delta = struct();
+%% what should be the value of delta??? its used in corrections later 
+%% ########################################
 delta.rudder_0_block1     = 0.0;
 delta.rudder_0_block3     = 0.0;
 delta.rudder_0_block4     = 0.0;
