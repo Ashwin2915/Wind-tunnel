@@ -13,6 +13,7 @@ clc
 % diskPath = 'C:\Group_16_Redo_BAL\BAL_redo'; %Ashwin Save
 diskPath = 'D:\TUD\Courses\Experimental Simulation\sandbox\BAL_redo'; %Nakul Save
 
+
 % get indices balance and pressure data files
 [idxB] = SUP_getIdx;
 
@@ -136,7 +137,7 @@ for i = 1:nCfg
 
     % ---------- 1) Blockage corrections ----------
     eps_sb = Ksb.(nm) * V_model.(nm) / (At^(3/2));
-    eps_wb = 0.25 * D0.CD;   % placeholder, replace if needed
+    eps_wb = 0.25 * D0.CD;   
     eps_tot = eps_sb + eps_wb;
 
     q_old = D0.q;
@@ -250,3 +251,5 @@ end
 xlabel('Corrected angle of attack \alpha_c [deg]')
 ylabel('Corrected pitching moment coefficient C_m')
 legend('Location','best')
+%%
+load("../propOff.mat")
