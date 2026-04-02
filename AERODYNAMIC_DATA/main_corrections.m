@@ -49,25 +49,25 @@ modelPos  = 'inverted'; % options: normal, inverted
 testSec   = 5;          % test-section number
 
 %% Run the processing code to get balance and pressure data
-BAL = BAL_process(diskPath,fn_BAL,fn0,idxB,D,S,b,c,XmRefB,XmRefM,dAoA,dAoS,modelType,modelPos,testSec);
-
+% BAL = BAL_process(diskPath,fn_BAL,fn0,idxB,D,S,b,c,XmRefB,XmRefM,dAoA,dAoS,modelType,modelPos,testSec);
+load("BAL.mat")
+% propOn_uncorrected = BAL.windOn
 %% User inputs for corrections
 
 At = 2.07;      % tunnel test-section area [m^2]
 alpha_up = 0.0; % tunnel upflow correction [deg]
 
-
 %% not including struts
 %% 0.0259787
-
-V_model = struct();
-V_model.rudder_0_block1     = 0.022;
-V_model.rudder_0_block3     = 0.022;
-V_model.rudder_0_block4     = 0.022;
-V_model.rudder_m10_block6_7 = 0.022;
-V_model.rudder_p5_block7b   = 0.022;
-V_model.rudder_p10_block1   = 0.022;
-V_model.rudder_p10_block5   = 0.022;
+% volume of the Model
+Vol_model = struct();
+Vol_model.rudder_0_block1     = 0.022;
+Vol_model.rudder_0_block3     = 0.022;
+Vol_model.rudder_0_block4     = 0.022;
+Vol_model.rudder_m10_block6_7 = 0.022;
+Vol_model.rudder_p5_block7b   = 0.022;
+Vol_model.rudder_p10_block1   = 0.022;
+Vol_model.rudder_p10_block5   = 0.022;
 
 
 %% what should this be ?
@@ -159,7 +159,7 @@ for i = 1:nCfg
     % ---------- 1) Blockage corrections ----------
     eps_sb = Ksb.(nm) * V_model.(nm) / (At^(3/2));
     %% eps_wb = 0.25 * D0.CD;   % placeholder, replace if needed
-    eps_wb = (S * D0.CD) / (4 * At);
+    eps_wb = (S * D0.CD) / (4 * At); % attached flow, separated eps = 0
     eps_tot = eps_sb + eps_wb;
 
     q_old = D0.q;
