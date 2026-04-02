@@ -65,8 +65,9 @@ interpolants = struct();
 for i = 1:numel(field_names)
     field = field_names{i};
     
+    % TODO - if ~ismember(field, {'AoA', 'AoS', 'Vinf', 'V', 'dE', 'dR'})
     % We assume linear interpolation for ease
-    if ~ismember(field, {'AoA', 'AoS', 'Vinf', 'V', 'dE', 'dR'})
+    if ~ismember(field, {'AoA', 'AoS', 'V', 'dE', 'dR'})
         if has_dE
             interpolants_V30.(field) = scatteredInterpolant( ...
                 data_V30.AoA, data_V30.AoS, data_V30.dR, data_V30.(field), 'linear', 'nearest');
@@ -88,7 +89,8 @@ end
 for i = 1:numel(field_names)
     field = field_names{i};
     % Skip independent variables
-    if ~ismember(field, {'AoA', 'AoS', 'Vinf', 'V', 'dE', 'dR'})
+    % if ~ismember(field, {'AoA', 'AoS', 'Vinf', 'V', 'dE', 'dR'})
+    if ~ismember(field, {'AoA', 'AoS', 'V', 'dE', 'dR'})
         if has_dE
             results.(field) = zeros(1, length(AoS_test), 2, 3); % (AoA, AoS, V, dR)
             for j = 1:length(dR_test)
