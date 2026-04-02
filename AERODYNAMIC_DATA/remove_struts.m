@@ -11,6 +11,9 @@ for i = 1:length(modelOff.AoA)
     fields_propOn = intersect(fieldnames(modelOff), fieldnames(propOn)); 
     fields_propOff = intersect(fieldnames(modelOff), fieldnames(propOff)); 
     fields_tailOff = intersect(fieldnames(modelOff),fieldnames(tailOff));
+
+% --- Project abandoned ----    
+
 end
 end
       
