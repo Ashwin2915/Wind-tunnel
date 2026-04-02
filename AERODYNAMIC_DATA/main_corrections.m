@@ -7,6 +7,8 @@ clear
 close all
 clc
 
+addpath("AERODYNAMIC_DATA")
+addpath("BAL_redo")
 %% Inputs
 
 % define root path on disk where data is stored
