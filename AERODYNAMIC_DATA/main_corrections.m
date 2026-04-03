@@ -55,19 +55,24 @@ load("TailOff_BAL.mat")
 % load("AERODYNAMIC_DATA/TailOff_BAL.mat")
 
 %% separating data
-field_names = fieldnames(BAL.windOn);
+block_names = fieldnames(BAL.windOn);
 
-propOff_uncorrected = struct();
-propOn_uncorrected = struct();
-for i = 1:numel(field_names)
-    field = field_names{i};
-    if contains(strfind(field, "block1")) % block 1 is propOff measurements
-        propOff_uncorrected.(field) = BAL.windOn.(field);
+propOff_uncorrected_disjoint = struct();
+propOn_uncorrected_disjoint = struct();
+for i = 1:numel(block_names) 
+    block = block_names{i};
+    if contains(block, "block1") % block 1 is propOff measurements
+        propOff_uncorrected_disjoint.(block) = BAL.windOn.(block);
     else
-        propOn_uncorrected.(field) = BAL.windOn.(field);
+        propOn_uncorrected_disjoint.(block) = BAL.windOn.(block);
     end
 end
-clear field field_names
+clear block block_names
+%%
+propOff_uncorrected = blocks_superglue(propOff_uncorrected_disjoint);
+propOn_uncorrected = blocks_superglue(propOn_uncorrected_disjoint);
+clear propOff_uncorrected_disjoint propOn_uncorrected_disjoint
+% freeing up memory ^
 %% User inputs for corrections
 
 At = 2.07;      % tunnel test-section area [m^2]

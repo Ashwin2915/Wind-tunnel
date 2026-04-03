@@ -8,14 +8,17 @@ combined_files = struct();
 
 data_fields = fieldnames(disjointedBlock_struct.(block_names{1}));
 
-for j = 1:numel(data_fields)
+for j = 5:numel(data_fields) % skipping run and time
     field = data_fields{j};
+    % fprintf("fieldname: %s\n",field) % For debugging
     % Accounting for constants
     if size(disjointedBlock_struct.(block_names{1}).(field),1) * ...
             size(disjointedBlock_struct.(block_names{1}).(field),2) == 1
         combined_files.(field) = disjointedBlock_struct.(block_names{1}).(field);
     end
     for i = 1:numel(block_names)
+        % block_names;
+        combined_files.(field) = []; %all data saved as lists, initialise empty list
         combined_files.(field) = [combined_files.(field);...
             disjointedBlock_struct.(block_names{i}).(field)];
     end
