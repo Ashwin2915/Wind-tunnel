@@ -51,6 +51,8 @@ testSec   = 5;          % test-section number
 %% Run the processing code to get balance and pressure data
 % BAL = BAL_process(diskPath,fn_BAL,fn0,idxB,D,S,b,c,XmRefB,XmRefM,dAoA,dAoS,modelType,modelPos,testSec);
 load("BAL.mat")
+load("TailOff_BAL.mat")
+% load("AERODYNAMIC_DATA/TailOff_BAL.mat")
 
 %% separating data
 field_names = fieldnames(BAL.windOn);
@@ -65,7 +67,7 @@ for i = 1:numel(field_names)
         propOn_uncorrected.(field) = BAL.windOn.(field);
     end
 end
-
+clear field field_names
 %% User inputs for corrections
 
 At = 2.07;      % tunnel test-section area [m^2]
