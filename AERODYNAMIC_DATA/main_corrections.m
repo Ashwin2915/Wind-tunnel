@@ -53,6 +53,7 @@ testSec   = 5;          % test-section number
 load("BAL.mat")
 load("TailOff_BAL.mat")
 % load("AERODYNAMIC_DATA/TailOff_BAL.mat")
+clear diskPath fn0 fn_BAL idxB
 
 %% separating data
 block_names = fieldnames(BAL.windOn);
