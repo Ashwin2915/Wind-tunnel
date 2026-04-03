@@ -51,7 +51,21 @@ testSec   = 5;          % test-section number
 %% Run the processing code to get balance and pressure data
 % BAL = BAL_process(diskPath,fn_BAL,fn0,idxB,D,S,b,c,XmRefB,XmRefM,dAoA,dAoS,modelType,modelPos,testSec);
 load("BAL.mat")
-% propOn_uncorrected = BAL.windOn
+
+%% separating data
+field_names = fieldnames(BAL.windOn);
+
+propOff_uncorrected = struct();
+propOn_uncorrected = struct();
+for i = 1:numel(field_names)
+    field = field_names{i};
+    if contains(strfind(field, "block1")) % block 1 is propOff measurements
+        propOff_uncorrected.(field) = BAL.windOn.(field);
+    else
+        propOn_uncorrected.(field) = BAL.windOn.(field);
+    end
+end
+
 %% User inputs for corrections
 
 At = 2.07;      % tunnel test-section area [m^2]
