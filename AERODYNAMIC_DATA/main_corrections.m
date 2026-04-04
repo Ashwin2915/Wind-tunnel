@@ -62,18 +62,18 @@ propOff_uncorrected_disjoint = struct();
 propOn_uncorrected_disjoint = struct();
 for i = 1:numel(block_names) 
     block = block_names{i};
-    block_length = length(BAL.windOn.block.AoA);
+    block_length = length(BAL.windOn.(block).AoA);
     % Rudder deflection variables
     if contains(block, "0")
         if contains(block, "m10")
-            BAL.windOn.block.dR = -10 * ones(block_length,1);
+            BAL.windOn.(block).dR = -10 * ones(block_length,1);
         elseif contains(block, "p10")
-            BAL.windOn.block.dR = 10 * ones(block_length,1);
+            BAL.windOn.(block).dR = 10 * ones(block_length,1);
         else
-            BAL.windOn.block.dR = zeros(block_length,1);
+            BAL.windOn.(block).dR = zeros(block_length,1);
         end
     elseif contains(block, "5")
-        BAL.windOn.block.dR = 5 * ones(block_length,1);
+        BAL.windOn.(block).dR = 5 * ones(block_length,1);
     end
 
     % combining blocks
