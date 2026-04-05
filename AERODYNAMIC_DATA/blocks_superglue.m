@@ -2,13 +2,13 @@ function combined_files = blocks_superglue(disjointedBlock_struct, isTAILOFF)
 % Join all the blocks
 
 if nargin < 2
+    fieldStart = 5; % skipping run and time
+else
     if isTAILOFF
         fieldStart = 1;
     else 
         fieldStart = 5; % skipping run and time
     end
-else
-    fieldStart = 5; % skipping run and time
 end
 block_names = fieldnames(disjointedBlock_struct); 
 % returns cell array {} with all block names
