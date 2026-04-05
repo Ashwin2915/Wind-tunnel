@@ -1,6 +1,15 @@
-function combined_files = blocks_superglue(disjointedBlock_struct)
+function combined_files = blocks_superglue(disjointedBlock_struct, isTAILOFF)
 % Join all the blocks
 
+if nargin < 2
+    if isTAILOFF
+        fieldStart = 1;
+    else 
+        fieldStart = 5; % skipping run and time
+    end
+else
+    fieldStart = 5; % skipping run and time
+end
 block_names = fieldnames(disjointedBlock_struct); 
 % returns cell array {} with all block names
 
@@ -8,7 +17,7 @@ combined_files = struct();
 
 data_fields = fieldnames(disjointedBlock_struct.(block_names{1}));
 
-for j = 5:numel(data_fields) % skipping run and time
+for j = fieldStart:numel(data_fields) % skipping run and time
     field = data_fields{j};
     % fprintf("fieldname: %s\n",field) % For debugging
     % Accounting for constants
