@@ -254,23 +254,32 @@ cfgNames = propOn_fields;
 nCfg = numel(cfgNames);
 clear propOn_fields proOff_fields
 
-for i = 1:nCfg
+for i = 1:nCfg % for loop not needed @Ashwin2915
     nm = cfgNames{i};
     D0 = BAL.windOn.(nm);
 
-    CLw = tailOff.CL;
-
+    
     if numel(CLw) ~= numel(D0.AoA)
         error('Size mismatch for %s: CLw has %d points, raw data has %d points.', ...
             nm,numel(CLw), numel(D0.AoA));
-    end
+        end
+        
+        % ---------- 1) Blockage corrections ----------
+        % eps_sb = Ksb.(nm) * V_model.(nm) / (At^(3/2));
+        % % eps_wb = 0.25 * D0.CD;   % placeholder, replace if needed
+        % eps_wb = (S * D0.CD) / (4 * At); % attached flow, separated eps = 0
 
-    % ---------- 1) Blockage corrections ----------
-    % eps_sb = Ksb.(nm) * V_model.(nm) / (At^(3/2));
-    % % eps_wb = 0.25 * D0.CD;   % placeholder, replace if needed
-    % eps_wb = (S * D0.CD) / (4 * At); % attached flow, separated eps = 0
-    propOn_uncorrected.eps_tot = blockage_corrections(propOn_uncorrected, At, TCStar);
-    propOff_uncorrected.eps_tot = blockage_corrections(propOff_uncorrected, At, TCStar);
+    % Get rid of everything above this, @Ashwin2915 approval
+    CLw = tailOff.CL;
+    nm = size(propOn_uncorrected.AoA, 1);
+    TCWing = zeros(nm);
+    TCStar = zeros(nm);
+    TC     = zeros(nm);
+    C_T    = zeros(nm);
+
+    [TCWing, TCStar, TC, C_T] = thrust_DNW(propOn_uncorrected, propOff_uncorrected, tailOff)
+    propOn_corrected  = blockage_corrections(propOn_uncorrected, At, TCStar);
+    propOff_corrected = blockage_corrections(propOff_uncorrected, At, TCStar);
 
     q_old = D0.q;
     q_corr = q_old .* (1 + eps_tot).^2;
