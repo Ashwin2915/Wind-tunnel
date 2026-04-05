@@ -232,7 +232,7 @@ CLw_data.block_p10_5.V   = data.rudder_p10_block5_V;
 CLw_data.block_p10_5.CL  = data.rudder_p10_block5;
 
 tailOff_disjoint = rudder_prop_corrector(CLw_data);
-tailOff = blocks_superglue(tailOff_disjoint);
+tailOff = blocks_superglue(tailOff_disjoint, true);
 
 clear data tailOff_disjoint CLW_data
 
