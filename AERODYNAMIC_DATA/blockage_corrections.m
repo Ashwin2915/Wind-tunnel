@@ -33,4 +33,7 @@ function data_corrected = blockage_corrections(data, tailOff, At, TCStar)
     dCD_up = CLw .* dalpha_up_rad;
     dCD_w  = data.delta .* CLw.^2;
     data_corrected.CD = CDu + dCD_up + dCD_w;
+
+    % data_corrected.CMpitch = data_corrected.CMpitch - dCm_dCL .* data_corrected.CMroll; % What is dCM_dCL value
+    
 end
