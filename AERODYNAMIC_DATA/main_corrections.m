@@ -94,8 +94,8 @@ clear propOff_uncorrected_disjoint propOn_uncorrected_disjoint
 
 propOff_uncorrected.Vol_model = 0.022;
 propOn_uncorrected.Vol_model = 0.022;
-propOff_uncorrected.Ksb = 0.96;
-propOn_uncorrected.Vol_model = 0.96;
+propOff_uncorrected.Ksb =  0.964;
+propOn_uncorrected.Vol_model = 0.964;
 %% User inputs for corrections
 
 At = 2.07;      % tunnel test-section area [m^2]
