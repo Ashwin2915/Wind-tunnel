@@ -92,10 +92,10 @@ propOn_uncorrected = blocks_superglue(propOn_uncorrected_disjoint);
 clear propOff_uncorrected_disjoint propOn_uncorrected_disjoint
 % freeing up memory ^
 
-propOff_uncorrected.Vol_model = 0.022 * ones(length(propOff_uncorrected.AoA));
-propOn_uncorrected.Vol_model = 0.022 * ones(length(propOn_uncorrected.AoA));
-propOff_uncorrected.Ksb = 0.96 * ones(length(propOff_uncorrected.AoA));
-propOn_uncorrected.Vol_model = 0.96 * ones(length(propOn_uncorrected.AoA));
+propOff_uncorrected.Vol_model = 0.022;
+propOn_uncorrected.Vol_model = 0.022;
+propOff_uncorrected.Ksb = 0.96;
+propOn_uncorrected.Vol_model = 0.96;
 %% User inputs for corrections
 
 At = 2.07;      % tunnel test-section area [m^2]
@@ -193,45 +193,48 @@ CLw_data = struct();
 CLw_data.rudder_0_block.AoA = data.rudder_0_block1_AoA;
 CLw_data.rudder_0_block.AoS = data.rudder_0_block1_AoS;
 CLw_data.rudder_0_block.V   = data.rudder_0_block1_V;
-CLw_data.rudder_0_block.Cl  = data.rudder_0_block1;
+CLw_data.rudder_0_block.CL  = data.rudder_0_block1;
 
 % === Block 3 (rudder_0_block3) ===
 CLw_data.rudder_0_block3.AoA = data.rudder_0_block3_AoA;
 CLw_data.rudder_0_block3.AoS = data.rudder_0_block3_AoS;
 CLw_data.rudder_0_block3.V   = data.rudder_0_block3_V;
-CLw_data.rudder_0_block3.Cl  = data.rudder_0_block3;
+CLw_data.rudder_0_block3.CL  = data.rudder_0_block3;
 
 % === Block 4 (rudder_0_block4) ===
 CLw_data.rudder_0_block4.AoA = data.rudder_0_block4_AoA;
 CLw_data.rudder_0_block4.AoS = data.rudder_0_block4_AoS;
 CLw_data.rudder_0_block4.V   = data.rudder_0_block4_V;
-CLw_data.rudder_0_block4.Cl  = data.rudder_0_block4;
+CLw_data.rudder_0_block4.CL  = data.rudder_0_block4;
 
 % === Block m10 (rudder_m10_block6_7) ===
 CLw_data.block_m10.AoA = data.rudder_m10_block6_7_AoA;
 CLw_data.block_m10.AoS = data.rudder_m10_block6_7_AoS;
 CLw_data.block_m10.V   = data.rudder_m10_block6_7_V;
-CLw_data.block_m10.Cl  = data.rudder_m10_block6_7;
+CLw_data.block_m10.CL  = data.rudder_m10_block6_7;
 
 % === Block p5 (rudder_p5_block7b) ===
 CLw_data.block_p5.AoA = data.rudder_p5_block7b_AoA;
 CLw_data.block_p5.AoS = data.rudder_p5_block7b_AoS;
 CLw_data.block_p5.V   = data.rudder_p5_block7b_V;
-CLw_data.block_p5.Cl  = data.rudder_p5_block7b;
+CLw_data.block_p5.CL  = data.rudder_p5_block7b;
 
 % === Block p10_1 (rudder_p10_block1) ===
 CLw_data.block_p10_1.AoA = data.rudder_p10_block1_AoA;
 CLw_data.block_p10_1.AoS = data.rudder_p10_block1_AoS;
 CLw_data.block_p10_1.V   = data.rudder_p10_block1_V;
-CLw_data.block_p10_1.Cl  = data.rudder_p10_block1;
+CLw_data.block_p10_1.CL  = data.rudder_p10_block1;
 
 % === Block p10_5 (rudder_p10_block5) ===
 CLw_data.block_p10_5.AoA = data.rudder_p10_block5_AoA;
 CLw_data.block_p10_5.AoS = data.rudder_p10_block5_AoS;
 CLw_data.block_p10_5.V   = data.rudder_p10_block5_V;
-CLw_data.block_p10_5.Cl  = data.rudder_p10_block5;
+CLw_data.block_p10_5.CL  = data.rudder_p10_block5;
 
-clear data
+tailOff_disjoint = rudder_prop_corrector(CLw_data);
+tailOff = blocks_superglue(tailOff_disjoint);
+
+clear data tailOff_disjoint CLW_data
 
 %% fieldnames(CLw_data)
 %% cfgNames
@@ -252,8 +255,7 @@ for i = 1:nCfg
     nm = cfgNames{i};
     D0 = BAL.windOn.(nm);
 
-    CLw = CLw_data.(nm);
-    CLw = CLw(:);
+    CLw = tailOff.CL;
 
     if numel(CLw) ~= numel(D0.AoA)
         error('Size mismatch for %s: CLw has %d points, raw data has %d points.', ...
@@ -261,10 +263,11 @@ for i = 1:nCfg
     end
 
     % ---------- 1) Blockage corrections ----------
-    eps_sb = Ksb.(nm) * V_model.(nm) / (At^(3/2));
-    %% eps_wb = 0.25 * D0.CD;   % placeholder, replace if needed
-    eps_wb = (S * D0.CD) / (4 * At); % attached flow, separated eps = 0
-    eps_tot = eps_sb + eps_wb;
+    % eps_sb = Ksb.(nm) * V_model.(nm) / (At^(3/2));
+    % % eps_wb = 0.25 * D0.CD;   % placeholder, replace if needed
+    % eps_wb = (S * D0.CD) / (4 * At); % attached flow, separated eps = 0
+    propOn_uncorrected.eps_tot = blockage_corrections(propOn_uncorrected, At, TCStar);
+    propOff_uncorrected.eps_tot = blockage_corrections(propOff_uncorrected, At, TCStar);
 
     q_old = D0.q;
     q_corr = q_old .* (1 + eps_tot).^2;
