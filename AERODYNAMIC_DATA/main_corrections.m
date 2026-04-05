@@ -135,6 +135,9 @@ delta.rudder_p5_block7b   = 0.0;
 delta.rudder_p10_block1   = 0.0;
 delta.rudder_p10_block5   = 0.0;
 
+propOn_uncorrected.delta  = 0.10375;
+propOff_uncorrected.delta = 0.10375;
+
 dCm_dCL = struct();
 dCm_dCL.rudder_0_block1     = 0.0;
 dCm_dCL.rudder_0_block3     = 0.0;
