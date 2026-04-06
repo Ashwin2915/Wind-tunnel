@@ -254,10 +254,16 @@ clear data tailOff_disjoint CLW_data
 % Ensure propOn and propOff have same fieldnames
 propOn_fields = fieldnames(propOn_uncorrected);
 proOff_fields = fieldnames(propOff_uncorrected);
-if propOn_fields ~= proOff_fields
-    missing_fields = [setdiff(propOn_fields, proOff_fields), setdiff(propOff_fields, propOn_fields)];
-    error("Data sets do not have the same fields: %s", join(string(missing_fields)), "\n")
+
+if ~isequal(propOn_fields, proOff_fields)
+    missing_fields = [setdiff(propOn_fields, proOff_fields); setdiff(proOff_fields, propOn_fields)];
+    error("Data sets do not have the same fields: %s", strjoin(string(missing_fields), ", "))
 end
+
+% if propOn_fields ~= proOff_fields
+%     missing_fields = [setdiff(propOn_fields, proOff_fields), setdiff(propOff_fields, propOn_fields)];
+%     error("Data sets do not have the same fields: %s", join(string(missing_fields)), "\n")
+% end
 
 cfgNames = propOn_fields;
 nCfg = numel(cfgNames);
