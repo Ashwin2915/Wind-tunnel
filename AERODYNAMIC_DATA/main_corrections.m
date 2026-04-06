@@ -374,6 +374,12 @@ CL_alpha = 5.000694 * ones(size(CLw));
 % upwash correction at the wing [rad]
 dalpha_uw = propOn_uncorrected.delta * (S/At) .* CLw;
 
+propOn_corrected.dalpha_uw_deg = rad2deg(dalpha_uw);
+propOn_corrected.AoA_corr = propOn_corrected.AoA + alpha_up + propOn_corrected.dalpha_uw_deg;
+
+propOff_corrected.dalpha_uw_deg = rad2deg(dalpha_uw);
+propOff_corrected.AoA_corr = propOff_corrected.AoA + alpha_up + propOff_corrected.dalpha_uw_deg;
+
 % wing upwash-gradient correction
 [dalpha_sc, dCM_025_uw] = upwash_gradient_wing_custom(dalpha_uw, CL_alpha);
 
