@@ -52,6 +52,10 @@ testSec   = 5;          % test-section number
 % BAL = BAL_process(diskPath,fn_BAL,fn0,idxB,D,S,b,c,XmRefB,XmRefM,dAoA,dAoS,modelType,modelPos,testSec);
 load("BAL.mat")
 load("TailOff_BAL.mat")
+
+[tailOff_on_disjoint, tailOff_off_disjoint] = rudder_prop_corrector(TailOff_BAL.windOn);
+tailOff_full = blocks_superglue(tailOff_on_disjoint);
+
 % load("AERODYNAMIC_DATA/TailOff_BAL.mat")
 clear diskPath fn0 fn_BAL idxB
 
@@ -368,6 +372,7 @@ C_T    = zeros(nm);
 propOn_uncorrected.J  = 0.5 * (propOn_uncorrected.J_M1  + propOn_uncorrected.J_M2);
 propOff_uncorrected.J = 0.5 * (propOff_uncorrected.J_M1 + propOff_uncorrected.J_M2);
 
+% [TCWing, TCStar, TC, C_T] = thrust_DNW(propOn_uncorrected, propOff_uncorrected, tailOff_full);
 [TCWing, TCStar, TC, C_T] = thrust_DNW(propOn_uncorrected, propOff_uncorrected, tailOff)
 propOn_corrected  = blockage_corrections(propOn_uncorrected, At, TCStar);
 propOff_corrected = blockage_corrections(propOff_uncorrected, At, TCStar);
