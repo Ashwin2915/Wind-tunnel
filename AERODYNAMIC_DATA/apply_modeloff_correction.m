@@ -7,7 +7,7 @@ dataOut = dataIn;
 AoA = dataIn.AoA(:);
 AoS = dataIn.AoS(:);
 
-coeffNames = {'CD','Cy','CL','CMroll','CMpitch','CMyaw'};
+coeffNames = {'CD','CY','CL','CMroll','CMpitch','CMyaw'};
 
 for k = 1:numel(coeffNames)
     nm = coeffNames{k};
