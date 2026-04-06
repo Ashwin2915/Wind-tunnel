@@ -30,8 +30,9 @@ for j = fieldStart:numel(data_fields) % skipping run and time
         if ~isfield(combined_files, field)
             combined_files.(field) = []; %all data saved as lists, initialise empty list
         end
-        combined_files.(field) = [combined_files.(field);...
-            disjointedBlock_struct.(block_names{i}).(field)];
+        disjointedBlock_struct.(block_names{i}).(field)
+        combined_files.(field) = [combined_files.(field),...
+            reshape(disjointedBlock_struct.(block_names{i}).(field), 1, [])];
     end
 end
 end
