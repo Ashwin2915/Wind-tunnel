@@ -210,42 +210,55 @@ CLw_data.rudder_0_block.AoA = data.rudder_0_block1_AoA;
 CLw_data.rudder_0_block.AoS = data.rudder_0_block1_AoS;
 CLw_data.rudder_0_block.V   = data.rudder_0_block1_V;
 CLw_data.rudder_0_block.CL  = data.rudder_0_block1;
+CLw_data.rudder_0_block.CT  = data.rudder_0_block1;
+
 
 % === Block 3 (rudder_0_block3) ===
 CLw_data.rudder_0_block3.AoA = data.rudder_0_block3_AoA;
 CLw_data.rudder_0_block3.AoS = data.rudder_0_block3_AoS;
 CLw_data.rudder_0_block3.V   = data.rudder_0_block3_V;
 CLw_data.rudder_0_block3.CL  = data.rudder_0_block3;
+CLw_data.rudder_0_block3.CT  = data.rudder_0_block3;
+
 
 % === Block 4 (rudder_0_block4) ===
 CLw_data.rudder_0_block4.AoA = data.rudder_0_block4_AoA;
 CLw_data.rudder_0_block4.AoS = data.rudder_0_block4_AoS;
 CLw_data.rudder_0_block4.V   = data.rudder_0_block4_V;
 CLw_data.rudder_0_block4.CL  = data.rudder_0_block4;
+CLw_data.rudder_0_block4.CT  = data.rudder_0_block4;
+
 
 % === Block m10 (rudder_m10_block6_7) ===
 CLw_data.block_m10.AoA = data.rudder_m10_block6_7_AoA;
 CLw_data.block_m10.AoS = data.rudder_m10_block6_7_AoS;
 CLw_data.block_m10.V   = data.rudder_m10_block6_7_V;
 CLw_data.block_m10.CL  = data.rudder_m10_block6_7;
+CLw_data.block_m10.CT  = data.rudder_m10_block6_7;
+
 
 % === Block p5 (rudder_p5_block7b) ===
 CLw_data.block_p5.AoA = data.rudder_p5_block7b_AoA;
 CLw_data.block_p5.AoS = data.rudder_p5_block7b_AoS;
 CLw_data.block_p5.V   = data.rudder_p5_block7b_V;
 CLw_data.block_p5.CL  = data.rudder_p5_block7b;
+CLw_data.block_p5.CT  = data.rudder_p5_block7b_CT;
+
 
 % === Block p10_1 (rudder_p10_block1) ===
 CLw_data.block_p10_1.AoA = data.rudder_p10_block1_AoA;
 CLw_data.block_p10_1.AoS = data.rudder_p10_block1_AoS;
 CLw_data.block_p10_1.V   = data.rudder_p10_block1_V;
 CLw_data.block_p10_1.CL  = data.rudder_p10_block1;
+CLw_data.block_p10_1.CT  = data.rudder_p10_block1;
+
 
 % === Block p10_5 (rudder_p10_block5) ===
 CLw_data.block_p10_5.AoA = data.rudder_p10_block5_AoA;
 CLw_data.block_p10_5.AoS = data.rudder_p10_block5_AoS;
 CLw_data.block_p10_5.V   = data.rudder_p10_block5_V;
 CLw_data.block_p10_5.CL  = data.rudder_p10_block5;
+CLw_data.block_p10_5.CT  = data.rudder_p10_block5;
 
 tailOff_disjoint = rudder_prop_corrector(CLw_data);
 tailOff = blocks_superglue(tailOff_disjoint, true);
