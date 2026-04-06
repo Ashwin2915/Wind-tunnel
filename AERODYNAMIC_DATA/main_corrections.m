@@ -351,7 +351,7 @@ for i = 1:nCfg % for loop not needed @Ashwin2915
 end 
 %}
 
- % Get rid of everything above this, @Ashwin2915 approval
+ *) % Get rid of everything above this, @Ashwin2915 approval
 CLw = tailOff.CL;
 nm = size(propOn_uncorrected.AoA, 1);
 TCWing = zeros(nm);
