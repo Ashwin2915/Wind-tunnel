@@ -92,6 +92,15 @@ propOn_uncorrected = blocks_superglue(propOn_uncorrected_disjoint);
 clear propOff_uncorrected_disjoint propOn_uncorrected_disjoint
 % freeing up memory ^
 
+
+%% Model-off correction (FIRST correction)
+% @nakul add this file when running 
+modelOff = load_modeloff_data('modelOffData.xlsx');
+
+propOn_uncorrected  = apply_modeloff_correction(propOn_uncorrected,  modelOff);
+propOff_uncorrected = apply_modeloff_correction(propOff_uncorrected, modelOff);
+
+
 propOff_uncorrected.Vol_model = 0.022;
 propOn_uncorrected.Vol_model = 0.022;
 propOff_uncorrected.Ksb =  0.964;
@@ -352,6 +361,41 @@ C_T    = zeros(nm);
 [TCWing, TCStar, TC, C_T] = thrust_DNW(propOn_uncorrected, propOff_uncorrected, tailOff)
 propOn_corrected  = blockage_corrections(propOn_uncorrected, At, TCStar);
 propOff_corrected = blockage_corrections(propOff_uncorrected, At, TCStar);
+
+
+%% Pitching moment wall correction (report-style)
+
+%% Pitching moment wall correction
+
+% temporary estimate of lift-curve slope [1/rad]
+%% Value lifted from a python script 
+CL_alpha = 5.000694 * ones(size(CLw));
+
+% upwash correction at the wing [rad]
+dalpha_uw = propOn_uncorrected.delta * (S/At) .* CLw;
+
+% wing upwash-gradient correction
+[dalpha_sc, dCM_025_uw] = upwash_gradient_wing_custom(dalpha_uw, CL_alpha);
+
+% tail downwash correction
+[dalpha_t, dCM_025_t] = downwash_tail_custom(CLw);
+
+% total pitching moment correction
+dCM_025c = dCM_025_uw + dCM_025_t;
+
+% corrected pitching moment
+propOn_corrected.CMpitch_corr = propOn_corrected.CMpitch + dCM_025c;
+
+% optional: save intermediate values
+propOn_corrected.dalpha_uw  = dalpha_uw;
+propOn_corrected.dalpha_sc  = dalpha_sc;
+propOn_corrected.dalpha_t   = dalpha_t;
+propOn_corrected.dCM_025_uw = dCM_025_uw;
+propOn_corrected.dCM_025_t  = dCM_025_t;
+propOn_corrected.dCM_025c   = dCM_025c;
+
+% Approve this part @Nakul 
+
 
 %% Optional: save all extracted lists to a .mat file
 save('Extracted_BAL_Data.mat', ...
