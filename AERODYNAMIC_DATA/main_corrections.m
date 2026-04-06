@@ -94,8 +94,8 @@ clear propOff_uncorrected_disjoint propOn_uncorrected_disjoint
 
 propOff_uncorrected.Vol_model = 0.022;
 propOn_uncorrected.Vol_model = 0.022;
-propOff_uncorrected.Ksb = 0.96;
-propOn_uncorrected.Ksb = 0.96;
+propOff_uncorrected.Ksb =  0.964;
+propOn_uncorrected.Vol_model = 0.964;
 %% User inputs for corrections
 
 At = 2.07;      % tunnel test-section area [m^2]
@@ -296,7 +296,7 @@ for i = 1:nCfg % for loop not needed @Ashwin2915
     CYc = CYu;
     Clc = Clu;
     %% DOUBLE CHECK
-    Cmc = Cmu - dCm_dCL.(nm) .* CLu;   % Clu or Clw ??????? #####################################################################
+    Cmc = Cmu - dCm_dCL.(nm) .* CLu;   %% Clu or Clw ??????? #####################################################################
     %% DOUBLE CHECK
     Cnc = Cnu;
 
@@ -349,7 +349,7 @@ TCStar = zeros(nm);
 TC     = zeros(nm);
 C_T    = zeros(nm);
 
-[TCWing, TCStar, TC, C_T] = thrust_DNW(propOn_uncorrected, propOff_uncorrected, tailOff);
+[TCWing, TCStar, TC, C_T] = thrust_DNW(propOn_uncorrected, propOff_uncorrected, tailOff)
 propOn_corrected  = blockage_corrections(propOn_uncorrected, At, TCStar);
 propOff_corrected = blockage_corrections(propOff_uncorrected, At, TCStar);
 
