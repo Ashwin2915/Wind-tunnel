@@ -262,7 +262,7 @@ end
 cfgNames = propOn_fields;
 nCfg = numel(cfgNames);
 clear propOn_fields proOff_fields
-
+(* 
 for i = 1:nCfg % for loop not needed @Ashwin2915
     nm = cfgNames{i};
     D0 = BAL.windOn.(nm);
@@ -348,7 +348,7 @@ for i = 1:nCfg % for loop not needed @Ashwin2915
     eps_sb_list{i}  = eps_sb;
     eps_wb_list{i}  = eps_wb;
     eps_tot_list{i} = eps_tot;
-end
+end *)
 
  % Get rid of everything above this, @Ashwin2915 approval
 CLw = tailOff.CL;
