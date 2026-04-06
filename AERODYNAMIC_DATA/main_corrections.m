@@ -365,6 +365,9 @@ TCStar = zeros(nm);
 TC     = zeros(nm);
 C_T    = zeros(nm);
 
+propOn_uncorrected.J  = 0.5 * (propOn_uncorrected.J_M1  + propOn_uncorrected.J_M2);
+propOff_uncorrected.J = 0.5 * (propOff_uncorrected.J_M1 + propOff_uncorrected.J_M2);
+
 [TCWing, TCStar, TC, C_T] = thrust_DNW(propOn_uncorrected, propOff_uncorrected, tailOff)
 propOn_corrected  = blockage_corrections(propOn_uncorrected, At, TCStar);
 propOff_corrected = blockage_corrections(propOff_uncorrected, At, TCStar);
