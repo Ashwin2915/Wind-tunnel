@@ -44,39 +44,38 @@ for k = 1:numel(coeffNames)
 end
 end
 
+% function dataOut = apply_modeloff_correction(dataIn, modelOff)
+% % Apply model-off correction using:
+% % Cx(a,b) = Cx(a,0) + Cx(0,b) - Cx(0,0)
 
-(* function dataOut = apply_modeloff_correction(dataIn, modelOff)
-% Apply model-off correction using:
-% Cx(a,b) = Cx(a,0) + Cx(0,b) - Cx(0,0)
+% dataOut = dataIn;
 
-dataOut = dataIn;
+% AoA = dataIn.AoA(:);
+% AoS = dataIn.AoS(:);
 
-AoA = dataIn.AoA(:);
-AoS = dataIn.AoS(:);
+% coeffNames = {'CD','CY','CL','CMroll','CMpitch','CMyaw'};
 
-coeffNames = {'CD','CY','CL','CMroll','CMpitch','CMyaw'};
+% for k = 1:numel(coeffNames)
+%     nm = coeffNames{k};
 
-for k = 1:numel(coeffNames)
-    nm = coeffNames{k};
+%     % values from AoA sweep at beta = 0
+%     C_a0 = interp1(modelOff.alpha0.AoA, modelOff.alpha0.(nm), AoA, 'linear', 'extrap');
 
-    % values from AoA sweep at beta = 0
-    C_a0 = interp1(modelOff.alpha0.AoA, modelOff.alpha0.(nm), AoA, 'linear', 'extrap');
+%     % values from AoS sweep at alpha = 0
+%     C_0b = interp1(modelOff.beta0.AoS, modelOff.beta0.(nm), AoS, 'linear', 'extrap');
 
-    % values from AoS sweep at alpha = 0
-    C_0b = interp1(modelOff.beta0.AoS, modelOff.beta0.(nm), AoS, 'linear', 'extrap');
+%     % value at alpha = 0, beta = 0
+%     C_00_a = interp1(modelOff.alpha0.AoA, modelOff.alpha0.(nm), 0, 'linear', 'extrap');
+%     C_00_b = interp1(modelOff.beta0.AoS, modelOff.beta0.(nm), 0, 'linear', 'extrap');
+%     C_00 = 0.5 * (C_00_a + C_00_b);   % average the two estimates
 
-    % value at alpha = 0, beta = 0
-    C_00_a = interp1(modelOff.alpha0.AoA, modelOff.alpha0.(nm), 0, 'linear', 'extrap');
-    C_00_b = interp1(modelOff.beta0.AoS, modelOff.beta0.(nm), 0, 'linear', 'extrap');
-    C_00 = 0.5 * (C_00_a + C_00_b);   % average the two estimates
+%     % total model-off correction
+%     C_modeloff = C_a0 + C_0b - C_00;
 
-    % total model-off correction
-    C_modeloff = C_a0 + C_0b - C_00;
+%     % subtract from measured coefficient
+%     dataOut.(nm) = dataIn.(nm) - C_modeloff;
 
-    % subtract from measured coefficient
-    dataOut.(nm) = dataIn.(nm) - C_modeloff;
-
-    % optional: store correction itself
-    dataOut.([nm '_modeloff']) = C_modeloff;
-end
-end *)
+%     % optional: store correction itself
+%     dataOut.([nm '_modeloff']) = C_modeloff;
+% end
+% end
