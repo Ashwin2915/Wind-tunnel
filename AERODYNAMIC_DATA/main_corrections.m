@@ -204,10 +204,10 @@ nCfg = numel(cfgNames);
 clear propOn_fields proOff_fields
 % CLw = tailOff.CL;
 nm = size(propOn_uncorrected.AoA, 1);
-TCWing = zeros(nm);
-TCStar = zeros(nm);
-TC     = zeros(nm);
-C_T    = zeros(nm);
+TCWing = zeros(1,nm);
+TCStar = zeros(1,nm);
+TC     = zeros(1,nm);
+C_T    = zeros(1,nm);
 
 propOn_uncorrected.J  = 0.5 * (propOn_uncorrected.J_M1  + propOn_uncorrected.J_M2);
 propOff_uncorrected.J = 0.5 * (propOff_uncorrected.J_M1 + propOff_uncorrected.J_M2);
@@ -270,7 +270,28 @@ propOn_corrected.dCM_025_uw = dCM_025_uw_on;
 propOn_corrected.dCM_025_t  = dCM_025_t_on;
 propOn_corrected.dCM_025c   = dCM_025c_on;
 
-% Approve this part @Nakul 
+propOn_corrected.AoS = propOn_uncorrected.AoS; 
+propOff_corrected.AoS = propOff_uncorrected.AoS;
+%%
+propOn_corrected.V = propOn_uncorrected.V;
+propOff_corrected.V = propOff_uncorrected.V;
+
+propOn_corrected.dR =  propOn_uncorrected.dR;
+propOff_corrected.dR = propOff_uncorrected.dR;
+
+propOn_corrected.C_T =  propOn_uncorrected.C_T;
+propOff_corrected.C_T = propOff_uncorrected.C_T;
+
+propOn_corrected.J =  propOn_uncorrected.J;
+propOff_corrected.J = propOff_uncorrected.J;
+
+propOn_corrected.rps =  propOn_uncorrected.rpsM1;
+propOff_corrected.rps = propOff_uncorrected.rpsM1;
+
+save("Arnav.mat", "propOff_corrected", "propOn_corrected");
+
+
+% Approve this part @Nakul (Approved - NG)
 
 
 %% Optional: save all extracted lists to a .mat file

@@ -3,10 +3,10 @@ function [TCWing, TCStar, TC, C_T] = thrust_DNW(propOn, propOff, tailOff)
 
 nPts = numel(propOn.AoA);
 
-TCWing = zeros(nPts,1);   % thrust coefficient wrt wing
-TCStar = zeros(nPts,1);   % thrust coefficient wrt prop disk
-TC     = zeros(nPts,1);
-C_T    = zeros(nPts,1);
+TCWing = zeros(1,nPts);   % thrust coefficient wrt wing
+TCStar = zeros(1,nPts);   % thrust coefficient wrt prop disk
+TC     = zeros(1,nPts);
+C_T    = zeros(1,nPts);
 
 for i = 1:nPts
     AoA = propOn.AoA(i);
