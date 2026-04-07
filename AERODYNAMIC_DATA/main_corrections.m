@@ -224,37 +224,51 @@ propOff_corrected = blockage_corrections(propOff_uncorrected, tailOff_off, At, T
 %% Pitching moment wall correction
 
 % temporary estimate of lift-curve slope [1/rad]
+
+
+% temporary estimate of lift-curve slope [1/rad]
 %% Value lifted from a python script 
-CL_alpha = 5.000694 * ones(size(CLw));
+
+CLw_on = tailOff_on.CL;   % tail-off lift coefficient matching prop-on dataset
+CLw_off = tailOff_off.CL;
+
+CL_alpha_on = 5.000694 * ones(size(CLw_on));
+CL_alpha_off = 5.000694 * ones(size(CLw_off));
 
 % upwash correction at the wing [rad]
-dalpha_uw = propOn_uncorrected.delta * (S/At) .* CLw;
+dalpha_uw_on = propOn_uncorrected.delta * (S/At) .* CLw_on;
+dalpha_uw_off = propOn_uncorrected.delta * (S/At) .* CLw_off;
 
-propOn_corrected.dalpha_uw_deg = rad2deg(dalpha_uw);
+propOn_corrected.dalpha_uw_deg = rad2deg(dalpha_uw_on);
 propOn_corrected.AoA_corr = propOn_corrected.AoA + alpha_up + propOn_corrected.dalpha_uw_deg;
 
-propOff_corrected.dalpha_uw_deg = rad2deg(dalpha_uw);
+propOff_corrected.dalpha_uw_deg = rad2deg(dalpha_uw_off);
 propOff_corrected.AoA_corr = propOff_corrected.AoA + alpha_up + propOff_corrected.dalpha_uw_deg;
 
+
 % wing upwash-gradient correction
-[dalpha_sc, dCM_025_uw] = upwash_gradient_wing_custom(dalpha_uw, CL_alpha);
+[dalpha_sc_on, dCM_025_uw_on] = upwash_gradient_wing_custom(dalpha_uw_on, CL_alpha_on);
+[dalpha_sc_off, dCM_025_uw_off] = upwash_gradient_wing_custom(dalpha_uw_off, CL_alpha_off);
 
 % tail downwash correction
-[dalpha_t, dCM_025_t] = downwash_tail_custom(CLw);
+[dalpha_t_on, dCM_025_t_on] = downwash_tail_custom(CLw_on);
+[dalpha_t_off, dCM_025_t_off] = downwash_tail_custom(CLw_off);
 
 % total pitching moment correction
-dCM_025c = dCM_025_uw + dCM_025_t;
+dCM_025c_on = dCM_025_uw_on + dCM_025_t_on;
+dCM_025c_off = dCM_025_uw_off + dCM_025_t_off;
 
 % corrected pitching moment
-propOn_corrected.CMpitch_corr = propOn_corrected.CMpitch + dCM_025c;
+propOn_corrected.CMpitch_corr = propOn_corrected.CMpitch + dCM_025c_on;
+propOff_corrected.CMpitch_corr = propOff_corrected.CMpitch + dCM_025c_off;
 
 % optional: save intermediate values
-propOn_corrected.dalpha_uw  = dalpha_uw;
-propOn_corrected.dalpha_sc  = dalpha_sc;
-propOn_corrected.dalpha_t   = dalpha_t;
-propOn_corrected.dCM_025_uw = dCM_025_uw;
-propOn_corrected.dCM_025_t  = dCM_025_t;
-propOn_corrected.dCM_025c   = dCM_025c;
+propOn_corrected.dalpha_uw  = dalpha_uw_on;
+propOn_corrected.dalpha_sc  = dalpha_sc_on;
+propOn_corrected.dalpha_t   = dalpha_t_on;
+propOn_corrected.dCM_025_uw = dCM_025_uw_on;
+propOn_corrected.dCM_025_t  = dCM_025_t_on;
+propOn_corrected.dCM_025c   = dCM_025c_on;
 
 % Approve this part @Nakul 
 
