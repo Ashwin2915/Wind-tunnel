@@ -292,8 +292,8 @@ save("Arnav.mat", "propOff_corrected", "propOn_corrected");
 
 
 % Approve this part @Nakul (Approved - NG)
-
-
+%%
+%{
 %% Optional: save all extracted lists to a .mat file
 save('Extracted_BAL_Data.mat', ...
     'cfg_list', ...
@@ -339,3 +339,4 @@ ylabel('Corrected pitching moment coefficient C_m')
 legend('Location','best')
 
 disp(eps_sb_list)
+%}
