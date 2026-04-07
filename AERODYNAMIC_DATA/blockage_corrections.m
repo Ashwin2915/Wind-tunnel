@@ -2,7 +2,7 @@ function data_corrected = blockage_corrections(data, tailOff, At, TCStar)
     % Calculate the blockage correction for propOn using 
     % At - Tunnel area
     % TCStar - Thrust Coefficient wrt prop
-    CLw      = tailOff.Cl;
+    CLw      = tailOff.CL;
     Ksb      = data.Ksb;
     V_model  = data.V_model;
     S_wing   = data.S;
