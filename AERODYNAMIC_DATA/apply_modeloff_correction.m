@@ -46,7 +46,7 @@ end
 
 % FIX 1
 
-function dataOut = apply_modeloff_correction(dataIn, modelOff)
+% function dataOut = apply_modeloff_correction(dataIn, modelOff)
 % % Apply model-off correction using:
 % % Cx(a,b) = Cx(a,0) + Cx(0,b) - Cx(0,0)
 
