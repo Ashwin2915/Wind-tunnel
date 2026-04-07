@@ -123,7 +123,7 @@ idx_best = idx_candidates(kbest);
 end
 
 
-(* function [TCWing, TCStar, TC, C_T] = thrust_DNW(propOn, propOff, tailOff)
+{% function [TCWing, TCStar, TC, C_T] = thrust_DNW(propOn, propOff, tailOff)
 % Outputs [TCWing, TCStar, TC, C_T] based on the DNW's Method
 TCWing = zeros(size(propOn.AoA, 1)); %thrust coefficient wrt wing
 TCStar = zeros(size(propOn.AoA, 1)); %thrust coefficient wrt prop
@@ -197,4 +197,4 @@ for i = 1:length(propOn.AoA)
     TC(i) = C_T(i)/J^2;
 
 end
-end *)
+end %}
