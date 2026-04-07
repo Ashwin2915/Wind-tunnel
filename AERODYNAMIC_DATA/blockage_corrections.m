@@ -4,7 +4,7 @@ function data_corrected = blockage_corrections(data, tailOff, At, TCStar)
     % TCStar - Thrust Coefficient wrt prop
     CLw      = tailOff.CL;
     Ksb      = data.Ksb;
-    V_model  = data.V_model;
+    V_model  = data.Vol_model;
     S_wing   = data.S;
     CD       = data.CD;
     eps_sb   = Ksb* V_model/ (At^(3/2));
