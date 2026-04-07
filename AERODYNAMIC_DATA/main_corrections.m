@@ -60,34 +60,6 @@ tailOff_full = blocks_superglue(tailOff_on_disjoint);
 clear diskPath fn0 fn_BAL idxB
 
 %% separating data
-% block_names = fieldnames(BAL.windOn);
-% 
-% propOff_uncorrected_disjoint = struct();
-% propOn_uncorrected_disjoint = struct();
-% for i = 1:numel(block_names) 
-%     block = block_names{i};
-%     block_length = length(BAL.windOn.(block).AoA);
-%     % Rudder deflection variables
-%     if contains(block, "0")
-%         if contains(block, "m10")
-%             BAL.windOn.(block).dR = -10 * ones(block_length,1);
-%         elseif contains(block, "p10")
-%             BAL.windOn.(block).dR = 10 * ones(block_length,1);
-%         else
-%             BAL.windOn.(block).dR = zeros(block_length,1);
-%         end
-%     elseif contains(block, "5")
-%         BAL.windOn.(block).dR = 5 * ones(block_length,1);
-%     end
-% 
-%     % combining blocks
-%     if contains(block, "block1") % block 1 is propOff measurements
-%         propOff_uncorrected_disjoint.(block) = BAL.windOn.(block);
-%     else
-%         propOn_uncorrected_disjoint.(block) = BAL.windOn.(block);
-%     end
-% end
-% clear block block_names block_length
 
 [propOn_uncorrected_disjoint, propOff_uncorrected_disjoint] = rudder_prop_corrector(BAL.windOn);
 %%
@@ -115,27 +87,6 @@ At = 2.07;      % tunnel test-section area [m^2]
 alpha_up = 0.0; % tunnel upflow correction [deg]
 
 %% not including struts
-%% 0.0259787
-% volume of the Model
-% Vol_model = struct();
-% Vol_model.rudder_0_block1     = 0.022;
-% Vol_model.rudder_0_block3     = 0.022;
-% Vol_model.rudder_0_block4     = 0.022;
-% Vol_model.rudder_m10_block6_7 = 0.022;
-% Vol_model.rudder_p5_block7b   = 0.022;
-% Vol_model.rudder_p10_block1   = 0.022;
-% Vol_model.rudder_p10_block5   = 0.022;
-
-
-%% what should this be ?
-% Ksb = struct();
-% Ksb.rudder_0_block1     = 0.90;
-% Ksb.rudder_0_block3     = 0.90;
-% Ksb.rudder_0_block4     = 0.90;
-% Ksb.rudder_m10_block6_7 = 0.90;
-% Ksb.rudder_p5_block7b   = 0.90;
-% Ksb.rudder_p10_block1   = 0.90;
-% Ksb.rudder_p10_block5   = 0.90;
 
 delta = struct();
 %% what should be the value of delta??? its used in corrections later 
@@ -162,45 +113,6 @@ dCm_dCL.rudder_p10_block5   = 0.0;
 
 %% Apply corrections
 
-% cfgNames = fieldnames(BAL.windOn);
-% nCfg = numel(cfgNames);
-
-% BALc = BAL; % corrected copy
-
-% % -------------------------------------------------------------
-% % Store all data in separate lists
-% % -------------------------------------------------------------
-
-% cfg_list = cfgNames;
-
-% % raw data
-% AoA_list     = cell(nCfg,1);
-% AoS_list     = cell(nCfg,1);
-% q_list       = cell(nCfg,1);
-% CL_list      = cell(nCfg,1);
-% CD_list      = cell(nCfg,1);
-% CY_list      = cell(nCfg,1);
-% CMroll_list  = cell(nCfg,1);
-% CMpitch_list = cell(nCfg,1);
-% CMyaw_list   = cell(nCfg,1);
-
-% % corrected data
-% q_corr_list       = cell(nCfg,1);
-% AoA_corr_list     = cell(nCfg,1);
-% CL_corr_list      = cell(nCfg,1);
-% CD_corr_list      = cell(nCfg,1);
-% CY_corr_list      = cell(nCfg,1);
-% CMroll_corr_list  = cell(nCfg,1);
-% CMpitch_corr_list = cell(nCfg,1);
-% CMyaw_corr_list   = cell(nCfg,1);
-
-% % correction terms
-% eps_sb_list  = cell(nCfg,1);
-% eps_wb_list  = cell(nCfg,1);
-% eps_tot_list = cell(nCfg,1);
-
-
-% CLw_data = load('CLw_lookup.mat');
 % Load the .mat file
 data = load('CLw_lookup.mat');
 CLw_data = struct();
@@ -292,96 +204,7 @@ end
 cfgNames = propOn_fields;
 nCfg = numel(cfgNames);
 clear propOn_fields proOff_fields
-%{
-for i = 1:nCfg % for loop not needed @Ashwin2915
-    nm = cfgNames{i};
-    D0 = BAL.windOn.(nm);
 
-    
-    if numel(CLw) ~= numel(D0.AoA)
-        error('Size mismatch for %s: CLw has %d points, raw data has %d points.', ...
-            nm,numel(CLw), numel(D0.AoA));
-        end
-        
-        % ---------- 1) Blockage corrections ----------
-        % eps_sb = Ksb.(nm) * V_model.(nm) / (At^(3/2));
-        % % eps_wb = 0.25 * D0.CD;   % placeholder, replace if needed
-        % eps_wb = (S * D0.CD) / (4 * At); % attached flow, separated eps = 0
-
-   
-
-    q_old = D0.q;
-    q_corr = q_old .* (1 + eps_tot).^2;
-
-    % ---------- 2) Recompute coefficients with corrected q ----------
-    CLu = D0.CL      .* (q_old ./ q_corr);
-    CDu = D0.CD      .* (q_old ./ q_corr);
-    CYu = D0.CY      .* (q_old ./ q_corr);
-    Clu = D0.CMroll  .* (q_old ./ q_corr);
-    Cmu = D0.CMpitch .* (q_old ./ q_corr);
-    Cnu = D0.CMyaw   .* (q_old ./ q_corr);
-
-    % ---------- 3) Wall corrections ----------
-    dalpha_w = delta.(nm) .* CLw .* 57.3;
-    dalpha_up_rad = deg2rad(alpha_up);
-
-    AoA_corr = D0.AoA + alpha_up + dalpha_w;
-
-    dCD_up = CLw .* dalpha_up_rad;
-    dCD_w  = delta.(nm) .* CLw.^2;
-    CDc = CDu + dCD_up + dCD_w;
-
-    CLc = CLu;
-    CYc = CYu;
-    Clc = Clu;
-    %% DOUBLE CHECK
-    Cmc = Cmu - dCm_dCL.(nm) .* CLu;   %% Clu or Clw ??????? #####################################################################
-    %% DOUBLE CHECK
-    Cnc = Cnu;
-
-    % ---------- store corrected data in BALc ----------
-    BALc.windOn.(nm).eps_sb       = eps_sb;
-    BALc.windOn.(nm).eps_wb       = eps_wb;
-    BALc.windOn.(nm).eps_tot      = eps_tot;
-    BALc.windOn.(nm).q_corr       = q_corr;
-
-    BALc.windOn.(nm).AoA_corr     = AoA_corr;
-    BALc.windOn.(nm).CL_corr      = CLc;
-    BALc.windOn.(nm).CD_corr      = CDc;
-    BALc.windOn.(nm).CY_corr      = CYc;
-    BALc.windOn.(nm).CMroll_corr  = Clc;
-    BALc.windOn.(nm).CMpitch_corr = Cmc;
-    BALc.windOn.(nm).CMyaw_corr   = Cnc;
-
-    % ---------- save raw data ----------
-    AoA_list{i}     = D0.AoA;
-    AoS_list{i}     = D0.AoS;
-    q_list{i}       = D0.q;
-    CL_list{i}      = D0.CL;
-    CD_list{i}      = D0.CD;
-    CY_list{i}      = D0.CY;
-    CMroll_list{i}  = D0.CMroll;
-    CMpitch_list{i} = D0.CMpitch;
-    CMyaw_list{i}   = D0.CMyaw;
-
-    % ---------- save corrected data ----------
-    q_corr_list{i}       = q_corr;
-    AoA_corr_list{i}     = AoA_corr;
-    CL_corr_list{i}      = CLc;
-    CD_corr_list{i}      = CDc;
-    CY_corr_list{i}      = CYc;
-    CMroll_corr_list{i}  = Clc;
-    CMpitch_corr_list{i} = Cmc;
-    CMyaw_corr_list{i}   = Cnc;
-
-    % ---------- save correction terms ----------
-    eps_sb_list{i}  = eps_sb;
-    eps_wb_list{i}  = eps_wb;
-    eps_tot_list{i} = eps_tot;
-end 
-%}
-
- *) % Get rid of everything above this, @Ashwin2915 approval
 CLw = tailOff.CL;
 nm = size(propOn_uncorrected.AoA, 1);
 TCWing = zeros(nm);
