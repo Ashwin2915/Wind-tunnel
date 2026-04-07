@@ -279,8 +279,11 @@ propOff_corrected.V = propOff_uncorrected.V;
 propOn_corrected.dR =  propOn_uncorrected.dR;
 propOff_corrected.dR = propOff_uncorrected.dR;
 
-propOn_corrected.CT =  propOn_uncorrected.CT;
-propOff_corrected.CT = propOff_uncorrected.CT;
+propOn_corrected.CT =  C_T;
+propOff_corrected.CT = 0;
+
+% propOn_corrected.CT =  propOn_uncorrected.CT;
+% propOff_corrected.CT = propOff_uncorrected.CT; 
 
 propOn_corrected.J =  propOn_uncorrected.J;
 propOff_corrected.J = propOff_uncorrected.J;
