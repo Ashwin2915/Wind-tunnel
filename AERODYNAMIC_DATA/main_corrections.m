@@ -198,16 +198,11 @@ if ~isequal(propOn_fields, proOff_fields)
     error("Data sets do not have the same fields: %s", strjoin(string(missing_fields), ", "))
 end
 
-% if propOn_fields ~= proOff_fields
-%     missing_fields = [setdiff(propOn_fields, proOff_fields), setdiff(propOff_fields, propOn_fields)];
-%     error("Data sets do not have the same fields: %s", join(string(missing_fields)), "\n")
-% end
-
 cfgNames = propOn_fields;
 nCfg = numel(cfgNames);
-clear propOn_fields proOff_fields
 
-CLw = tailOff.CL;
+clear propOn_fields proOff_fields
+% CLw = tailOff.CL;
 nm = size(propOn_uncorrected.AoA, 1);
 TCWing = zeros(nm);
 TCStar = zeros(nm);
@@ -218,7 +213,7 @@ propOn_uncorrected.J  = 0.5 * (propOn_uncorrected.J_M1  + propOn_uncorrected.J_M
 propOff_uncorrected.J = 0.5 * (propOff_uncorrected.J_M1 + propOff_uncorrected.J_M2);
 
 % [TCWing, TCStar, TC, C_T] = thrust_DNW(propOn_uncorrected, propOff_uncorrected, tailOff_full);
-[TCWing, TCStar, TC, C_T] = thrust_DNW(propOn_uncorrected, propOff_uncorrected, tailOff);
+[TCWing, TCStar, TC, C_T] = thrust_DNW(propOn_uncorrected, propOff_uncorrected, tailOff_on);
 propOn_corrected  = blockage_corrections(propOn_uncorrected, tailOff_on, At, TCStar);
 propOff_corrected = blockage_corrections(propOff_uncorrected, tailOff_off, At, TCStar);
 
