@@ -51,10 +51,10 @@ testSec   = 5;          % test-section number
 %% Run the processing code to get balance and pressure data
 % BAL = BAL_process(diskPath,fn_BAL,fn0,idxB,D,S,b,c,XmRefB,XmRefM,dAoA,dAoS,modelType,modelPos,testSec);
 load("BAL.mat")
-load("TailOff_BAL.mat")
+% load("TailOff_BAL.mat")
 
-[tailOff_on_disjoint, tailOff_off_disjoint] = rudder_prop_corrector(TailOff_BAL.windOn);
-tailOff_full = blocks_superglue(tailOff_on_disjoint);
+% [tailOff_on_disjoint, tailOff_off_disjoint] = rudder_prop_corrector(TailOff_BAL.windOn);
+% tailOff_full = blocks_superglue(tailOff_on_disjoint);
 
 % load("AERODYNAMIC_DATA/TailOff_BAL.mat")
 clear diskPath fn0 fn_BAL idxB
@@ -73,14 +73,15 @@ clear propOff_uncorrected_disjoint propOn_uncorrected_disjoint
 % @nakul add this file when running 
 modelOff = load_modeloff_data('modelOffData.xlsx');
 
+
 propOn_uncorrected  = apply_modeloff_correction(propOn_uncorrected,  modelOff);
 propOff_uncorrected = apply_modeloff_correction(propOff_uncorrected, modelOff);
-
+%%
 
 propOff_uncorrected.Vol_model = 0.022;
 propOn_uncorrected.Vol_model = 0.022;
 propOff_uncorrected.Ksb =  0.964;
-propOn_uncorrected.Vol_model = 0.964;
+propOn_uncorrected.Ksb = 0.964;
 %% User inputs for corrections
 
 At = 2.07;      % tunnel test-section area [m^2]
@@ -118,12 +119,12 @@ data = load('CLw_lookup.mat');
 CLw_data = struct();
 
 % === Block 1 (rudder_0_block1) ===
-CLw_data.rudder_0_block.AoA = data.rudder_0_block1_AoA;
-CLw_data.rudder_0_block.AoS = data.rudder_0_block1_AoS;
-CLw_data.rudder_0_block.V   = data.rudder_0_block1_V;
-CLw_data.rudder_0_block.CL  = data.rudder_0_block1;
-CLw_data.rudder_0_block.CT  = data.rudder_0_block1_CT;
-CLw_data.rudder_0_block.CD  = data.rudder_0_block1_CD;
+CLw_data.rudder_0_block1.AoA = data.rudder_0_block1_AoA;
+CLw_data.rudder_0_block1.AoS = data.rudder_0_block1_AoS;
+CLw_data.rudder_0_block1.V   = data.rudder_0_block1_V;
+CLw_data.rudder_0_block1.CL  = data.rudder_0_block1;
+CLw_data.rudder_0_block1.CT  = data.rudder_0_block1_CT;
+CLw_data.rudder_0_block1.CD  = data.rudder_0_block1_CD;
 
 
 % === Block 3 (rudder_0_block3) ===
@@ -149,8 +150,8 @@ CLw_data.block_m10.AoA = data.rudder_m10_block6_7_AoA;
 CLw_data.block_m10.AoS = data.rudder_m10_block6_7_AoS;
 CLw_data.block_m10.V   = data.rudder_m10_block6_7_V;
 CLw_data.block_m10.CL  = data.rudder_m10_block6_7;
-CLw_data.block_m10.CT  = data.rudder_m10_block6_7__CT;
-CLw_data.block_m10.CD  = data.rudder_m10_block6_7__CD;
+CLw_data.block_m10.CT  = data.rudder_m10_block6_7_CT;
+CLw_data.block_m10.CD  = data.rudder_m10_block6_7_CD;
 
 
 % === Block p5 (rudder_p5_block7b) ===
@@ -163,12 +164,12 @@ CLw_data.block_p5.CD  = data.rudder_p5_block7b_CD;
 
 
 % === Block p10_1 (rudder_p10_block1) ===
-CLw_data.block_p10_1.AoA = data.rudder_p10_block1_AoA;
-CLw_data.block_p10_1.AoS = data.rudder_p10_block1_AoS;
-CLw_data.block_p10_1.V   = data.rudder_p10_block1_V;
-CLw_data.block_p10_1.CL  = data.rudder_p10_block1;
-CLw_data.block_p10_1.CT  = data.rudder_p10_block1_CT;
-CLw_data.block_p10_1.CD  = data.rudder_p10_block1_CD;
+CLw_data.block_p10_block1.AoA = data.rudder_p10_block1_AoA;
+CLw_data.block_p10_block1.AoS = data.rudder_p10_block1_AoS;
+CLw_data.block_p10_block1.V   = data.rudder_p10_block1_V;
+CLw_data.block_p10_block1.CL  = data.rudder_p10_block1;
+CLw_data.block_p10_block1.CT  = data.rudder_p10_block1_CT;
+CLw_data.block_p10_block1.CD  = data.rudder_p10_block1_CD;
 
 
 % === Block p10_5 (rudder_p10_block5) ===
@@ -179,10 +180,11 @@ CLw_data.block_p10_5.CL  = data.rudder_p10_block5;
 CLw_data.block_p10_5.CT  = data.rudder_p10_block5_CT;
 CLw_data.block_p10_5.CD  = data.rudder_p10_block5_CD;
 
-tailOff_disjoint = rudder_prop_corrector(CLw_data);
-tailOff = blocks_superglue(tailOff_disjoint, true);
+[tailOff_on_disjoint, tailOff_off_disjoint] = rudder_prop_corrector(CLw_data);
+tailOff_on = blocks_superglue(tailOff_on_disjoint, true);
+tailOff_off = blocks_superglue(tailOff_off_disjoint, true);
 
-clear data tailOff_disjoint CLW_data
+clear data CLW_data
 
 %% fieldnames(CLw_data)
 %% cfgNames
@@ -216,9 +218,9 @@ propOn_uncorrected.J  = 0.5 * (propOn_uncorrected.J_M1  + propOn_uncorrected.J_M
 propOff_uncorrected.J = 0.5 * (propOff_uncorrected.J_M1 + propOff_uncorrected.J_M2);
 
 % [TCWing, TCStar, TC, C_T] = thrust_DNW(propOn_uncorrected, propOff_uncorrected, tailOff_full);
-[TCWing, TCStar, TC, C_T] = thrust_DNW(propOn_uncorrected, propOff_uncorrected, tailOff)
-propOn_corrected  = blockage_corrections(propOn_uncorrected, tailOff, At, TCStar);
-propOff_corrected = blockage_corrections(propOff_uncorrected, tailOff, At, TCStar);
+[TCWing, TCStar, TC, C_T] = thrust_DNW(propOn_uncorrected, propOff_uncorrected, tailOff);
+propOn_corrected  = blockage_corrections(propOn_uncorrected, tailOff_on, At, TCStar);
+propOff_corrected = blockage_corrections(propOff_uncorrected, tailOff_off, At, TCStar);
 
 
 %% Pitching moment wall correction (report-style)
