@@ -28,7 +28,7 @@ function data_corrected = blockage_corrections(data, tailOff, At, TCStar)
 
     dalpha_w           = data.delta .* CLw .* 57.3;
     dalpha_up_rad      = deg2rad(alpha_up);
-    data_corrected.AoA = data.AoA + alpha_up + dalpha_w;
+    data_corrected.AoA = data.AoA %+ alpha_up + dalpha_w;
     data_corrected.AoS = data.AoS;
 
 
