@@ -115,7 +115,7 @@ if isempty(idx_candidates)
 end
 
 dist = (dataStruct.AoA(idx_candidates) - AoA).^2 + ...
-       (dataStruct.AoS(idx_candidates) - AoS).^2;
+       (dataStruct.AoS(idx_candidates) - AoS).^2 (dataStruct.dR(idx_candidates)  - dR ).^2;
 
 [~, kbest] = min(dist);
 idx_best = idx_candidates(kbest);
