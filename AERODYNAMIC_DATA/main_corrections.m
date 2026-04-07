@@ -215,7 +215,8 @@ propOff_uncorrected.J = 0.5 * (propOff_uncorrected.J_M1 + propOff_uncorrected.J_
 % [TCWing, TCStar, TC, C_T] = thrust_DNW(propOn_uncorrected, propOff_uncorrected, tailOff_full);
 [TCWing, TCStar, TC, C_T] = thrust_DNW(propOn_uncorrected, propOff_uncorrected, tailOff_on);
 propOn_corrected  = blockage_corrections(propOn_uncorrected, tailOff_on, At, TCStar);
-propOff_corrected = blockage_corrections(propOff_uncorrected, tailOff_off, At, TCStar);
+TCStar_off = zeros(size(propOff_uncorrected.AoA,1));
+propOff_corrected = blockage_corrections(propOff_uncorrected, tailOff_off, At, TCStar_off);
 
 
 %% Pitching moment wall correction (report-style)
