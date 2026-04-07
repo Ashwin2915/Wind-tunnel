@@ -2,11 +2,11 @@ function data_corrected = blockage_corrections(data, tailOff, At, TCStar)
     % Calculate the blockage correction for propOn using 
     % At - Tunnel area
     % TCStar - Thrust Coefficient wrt prop
-    CLw      = tailOff.CL;
-    Ksb      = data.Ksb;
-    V_model  = data.Vol_model;
+    CLw      = reshape(tailOff.CL, 1, []);
+    Ksb      = reshape(data.Ksb, 1, []);
+    V_model  = reshape(data.Vol_model, 1, []);
+    CD       = reshape(data.CD, 1, []);
     S_wing   = data.S;
-    CD       = data.CD;
     eps_sb   = Ksb* V_model/ (At^(3/2));
     alpha_up = 0;
     c        = data.c;
@@ -18,13 +18,13 @@ function data_corrected = blockage_corrections(data, tailOff, At, TCStar)
 
     
     % ---------- 2) Recompute coefficients ----------
-    data_corrected.q       = data.q       .* (1 + eps_tot).^2;
-    data_corrected.CL      = data.CL      ./ (1 + eps_tot).^2; % corrected lift coefficient
-    data_corrected.CD      = data.CD      ./ (1 + eps_tot).^2; 
-    data_corrected.CY      = data.CY      ./ (1 + eps_tot).^2; % corrected side-force coefficient
-    data_corrected.CMroll  = data.CMroll  ./ (1 + eps_tot).^2; % corrected rolling-moment coefficient
-    data_corrected.CMpitch = data.CMpitch ./ (1 + eps_tot).^2; % corrected pitching-moment coefficient
-    data_corrected.CMyaw   = data.CMyaw   ./ (1 + eps_tot).^2;
+    data_corrected.q       = reshape(data.q,1,[])       .* (1 + eps_tot).^2;
+    data_corrected.CL      = reshape(data.CL,1,[])      ./ (1 + eps_tot).^2; % corrected lift coefficient
+    data_corrected.CD      = reshape(data.CD,1,[])      ./ (1 + eps_tot).^2; 
+    data_corrected.CY      = reshape(data.CY,1,[])      ./ (1 + eps_tot).^2; % corrected side-force coefficient
+    data_corrected.CMroll  = reshape(data.CMroll,1,[])  ./ (1 + eps_tot).^2; % corrected rolling-moment coefficient
+    data_corrected.CMpitch = reshape(data.CMpitch,1,[]) ./ (1 + eps_tot).^2; % corrected pitching-moment coefficient
+    data_corrected.CMyaw   = reshape(data.CMyaw,1,[])   ./ (1 + eps_tot).^2;
 
     dalpha_w           = data.delta .* CLw .* 57.3;
     dalpha_up_rad      = deg2rad(alpha_up);
@@ -35,7 +35,7 @@ function data_corrected = blockage_corrections(data, tailOff, At, TCStar)
     dCD_up = CLw .* dalpha_up_rad;
     dCD_w  = data.delta .* CLw.^2;
     CDu = data_corrected.CD;
-    data_corrected.CD = CDu + dCD_up + dCD_w;
+    data_corrected.CD = reshape(CDu, 1,[]) + dCD_up + dCD_w;
 
     % data_corrected.CMpitch = data_corrected.CMpitch - dCm_dCL .* data_corrected.CMroll;  % corrected pitching-moment coefficient
     % What is dCM_dCL value ^
@@ -45,3 +45,5 @@ function data_corrected = blockage_corrections(data, tailOff, At, TCStar)
     % del_alphaT = delta S_wing/c
 
 end
+
+

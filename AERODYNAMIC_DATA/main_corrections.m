@@ -259,8 +259,8 @@ dCM_025c_on = dCM_025_uw_on + dCM_025_t_on;
 dCM_025c_off = dCM_025_uw_off + dCM_025_t_off;
 
 % corrected pitching moment
-propOn_corrected.CMpitch_corr = propOn_corrected.CMpitch + dCM_025c_on;
-propOff_corrected.CMpitch_corr = propOff_corrected.CMpitch + dCM_025c_off;
+propOn_corrected.CMpitch_corr = propOn_corrected.CMpitch' + dCM_025c_on;
+propOff_corrected.CMpitch_corr = propOff_corrected.CMpitch' + dCM_025c_off;
 
 % optional: save intermediate values
 propOn_corrected.dalpha_uw  = dalpha_uw_on;
@@ -279,8 +279,8 @@ propOff_corrected.V = propOff_uncorrected.V;
 propOn_corrected.dR =  propOn_uncorrected.dR;
 propOff_corrected.dR = propOff_uncorrected.dR;
 
-propOn_corrected.C_T =  propOn_uncorrected.C_T;
-propOff_corrected.C_T = propOff_uncorrected.C_T;
+propOn_corrected.CT =  propOn_uncorrected.CT;
+propOff_corrected.CT = propOff_uncorrected.CT;
 
 propOn_corrected.J =  propOn_uncorrected.J;
 propOff_corrected.J = propOff_uncorrected.J;
